@@ -20,7 +20,7 @@ python app.py
   - `OPENAI_API_BASE` (默认 https://api.openai.com/v1)
 
 ## 功能
-- 登录/注册（服务器数据库）
+- 无需登录，打开即用
 - 输入业务信息
 - 选择风格与平台
 - 输出按平台拆分的爆款内容
