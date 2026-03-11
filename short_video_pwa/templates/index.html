@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>短视频爆款生成器</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/static/app.css" />
+  <meta name="theme-color" content="#1f2937" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">短视频爆款生成器</div>
+    <div class="user-area" id="userArea">
+      <span id="userName"></span>
+      <button id="logoutBtn" class="btn ghost">退出</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="authPanel" class="card auth">
+      <h2>登录 / 注册</h2>
+      <div class="row">
+        <input id="authUser" type="text" placeholder="用户名" />
+        <input id="authPass" type="password" placeholder="密码" />
+      </div>
+      <div class="row">
+        <button id="loginBtn" class="btn primary">登录</button>
+        <button id="registerBtn" class="btn">注册</button>
+      </div>
+      <p class="hint">提示：账号仅保存在服务器数据库</p>
+    </section>
+
+    <section id="appPanel" class="grid">
+      <div class="card">
+        <h2>输入信息</h2>
+        <div class="field"><label>具体生意</label><input id="business" /></div>
+        <div class="field"><label>行业</label><input id="industry" /></div>
+        <div class="field"><label>受众客户群体</label><input id="audience" /></div>
+        <div class="field"><label>核心卖点（逗号分隔）</label><textarea id="core_selling_points"></textarea></div>
+        <div class="field"><label>获客方式</label><input id="acquisition_method" /></div>
+        <div class="field"><label>同行对标账号</label><input id="benchmarks" /></div>
+        <div class="field"><label>对标标题/爆款方向</label><textarea id="benchmark_notes"></textarea></div>
+
+        <div class="field"><label>风格</label>
+          <select id="style">
+            <option>薛辉</option>
+            <option>王泽旭</option>
+            <option>董十一</option>
+            <option>三把刀</option>
+            <option>金枪大叔</option>
+            <option>婉婉的直播</option>
+          </select>
+        </div>
+
+        <div class="field"><label>平台</label>
+          <div class="chips">
+            <label><input type="checkbox" value="抖音" checked /> 抖音</label>
+            <label><input type="checkbox" value="小红书" checked /> 小红书</label>
+            <label><input type="checkbox" value="视频号" /> 视频号</label>
+            <label><input type="checkbox" value="快手" /> 快手</label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="generateBtn" class="btn primary">生成</button>
+          <button id="exportBtn" class="btn">导出TXT</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>输出结果</h2>
+        <pre id="output" class="output">请填写信息并生成…</pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
