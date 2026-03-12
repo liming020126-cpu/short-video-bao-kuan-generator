@@ -1,6 +1,7 @@
 services:
   - type: web
     name: short-video-bao-kuan-generator
+    plan: free
     env: python
     rootDir: short_video_pwa
     buildCommand: pip install -r requirements.txt
