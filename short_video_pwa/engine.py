@@ -21,8 +21,8 @@ def call_openai_responses(system_prompt: str, user_prompt: str) -> str:
     payload = {
         "model": model,
         "input": [
-            {"role": "system", "content": [{"type": "text", "text": system_prompt}]},
-            {"role": "user", "content": [{"type": "text", "text": user_prompt}]},
+            {"role": "system", "content": [{"type": "input_text", "text": system_prompt}]},
+            {"role": "user", "content": [{"type": "input_text", "text": user_prompt}]},
         ],
         "temperature": 0.7,
     }
