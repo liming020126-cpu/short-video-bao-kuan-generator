@@ -3,60 +3,344 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>短视频爆款生成器</title>
+  <title>短视频智能体</title>
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/static/app.css" />
   <meta name="theme-color" content="#1f2937" />
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">短视频爆款生成器</div>
+    <div class="brand">🎬 短视频智能体</div>
     <div class="user-area" id="userArea"></div>
   </header>
 
+  <!-- Tab navigation -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="tab-script">📝 爆款文案</button>
+    <button class="tab-btn" data-tab="tab-product">🛍️ 带货视频</button>
+    <button class="tab-btn" data-tab="tab-voiceover">🎙️ 口播脚本</button>
+    <button class="tab-btn" data-tab="tab-publish">🚀 一键发布</button>
+  </nav>
+
   <main class="container">
-    <section id="appPanel" class="grid">
-      <div class="card">
-        <h2>输入信息</h2>
-        <div class="field"><label>具体生意</label><input id="business" /></div>
-        <div class="field"><label>行业</label><input id="industry" /></div>
-        <div class="field"><label>受众客户群体</label><input id="audience" /></div>
-        <div class="field"><label>核心卖点（逗号分隔）</label><textarea id="core_selling_points"></textarea></div>
-        <div class="field"><label>获客方式</label><input id="acquisition_method" /></div>
-        <div class="field"><label>同行对标账号</label><input id="benchmarks" /></div>
-        <div class="field"><label>对标标题/爆款方向</label><textarea id="benchmark_notes"></textarea></div>
 
-        <div class="field"><label>风格</label>
-          <select id="style">
-            <option>薛辉</option>
-            <option>王泽旭</option>
-            <option>董十一</option>
-            <option>三把刀</option>
-            <option>金枪大叔</option>
-            <option>婉婉的直播</option>
-          </select>
-        </div>
+    <!-- ── Tab 0: 爆款文案生成器 ──────────────────────────────────────── -->
+    <section id="tab-script" class="tab-panel active">
+      <div class="grid">
+        <div class="card">
+          <h2>输入信息</h2>
+          <div class="field"><label>具体生意</label><input id="business" /></div>
+          <div class="field"><label>行业</label><input id="industry" /></div>
+          <div class="field"><label>受众客户群体</label><input id="audience" /></div>
+          <div class="field"><label>核心卖点（逗号分隔）</label><textarea id="core_selling_points"></textarea></div>
+          <div class="field"><label>获客方式</label><input id="acquisition_method" /></div>
+          <div class="field"><label>同行对标账号</label><input id="benchmarks" /></div>
+          <div class="field"><label>对标标题/爆款方向</label><textarea id="benchmark_notes"></textarea></div>
 
-        <div class="field"><label>平台</label>
-          <div class="chips">
-            <label><input type="checkbox" value="抖音" checked /> 抖音</label>
-            <label><input type="checkbox" value="小红书" checked /> 小红书</label>
-            <label><input type="checkbox" value="视频号" /> 视频号</label>
-            <label><input type="checkbox" value="快手" /> 快手</label>
+          <div class="field"><label>风格</label>
+            <select id="style">
+              <option>薛辉</option>
+              <option>王泽旭</option>
+              <option>董十一</option>
+              <option>三把刀</option>
+              <option>金枪大叔</option>
+              <option>婉婉的直播</option>
+            </select>
+          </div>
+
+          <div class="field"><label>平台</label>
+            <div class="chips" id="scriptPlatforms">
+              <label><input type="checkbox" value="抖音" checked /> 抖音</label>
+              <label><input type="checkbox" value="小红书" checked /> 小红书</label>
+              <label><input type="checkbox" value="视频号" /> 视频号</label>
+              <label><input type="checkbox" value="快手" /> 快手</label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="generateBtn" class="btn primary">生成文案</button>
+            <button id="exportBtn" class="btn">导出 TXT</button>
           </div>
         </div>
 
-        <div class="actions">
-          <button id="generateBtn" class="btn primary">生成</button>
-          <button id="exportBtn" class="btn">导出TXT</button>
+        <div class="card">
+          <h2>输出结果</h2>
+          <pre id="output" class="output">请填写信息并生成…</pre>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h2>输出结果</h2>
-        <pre id="output" class="output">请填写信息并生成…</pre>
+    <!-- ── Tab 1: 带货视频生成器 ──────────────────────────────────────── -->
+    <section id="tab-product" class="tab-panel">
+      <div class="grid">
+        <div class="card">
+          <h2>商品信息</h2>
+
+          <div class="field">
+            <label>商品参考图（可选）</label>
+            <div class="upload-area" id="productUploadArea">
+              <input type="file" id="productImage" accept="image/jpeg,image/png,image/webp" class="file-input" />
+              <div class="upload-hint" id="productUploadHint">
+                <span class="upload-icon">📷</span>
+                <span>点击或拖拽上传商品图片</span>
+                <span class="hint">支持 JPG / PNG / WEBP，最大 10MB</span>
+              </div>
+              <img id="productImagePreview" class="image-preview hidden" alt="商品预览" />
+            </div>
+          </div>
+
+          <div class="field"><label>商品类目</label>
+            <select id="productCategory">
+              <option value="通用商品">通用商品</option>
+              <option value="服装上衣">服装 - 上衣</option>
+              <option value="服装裤子">服装 - 裤子</option>
+              <option value="服装裙子">服装 - 裙子</option>
+              <option value="服装外套">服装 - 外套</option>
+              <option value="服装连衣裙">服装 - 连衣裙</option>
+              <option value="服装内衣">服装 - 内衣/家居服</option>
+              <option value="美妆护肤">美妆 / 护肤</option>
+              <option value="食品饮料">食品 / 饮料</option>
+              <option value="数码电子">数码 / 电子</option>
+              <option value="家居家装">家居 / 家装</option>
+              <option value="运动户外">运动 / 户外</option>
+              <option value="母婴玩具">母婴 / 玩具</option>
+              <option value="宠物用品">宠物用品</option>
+            </select>
+          </div>
+
+          <div class="field"><label>商品描述（卖点、特点、材质等）</label>
+            <textarea id="productDescription" placeholder="例：纯棉面料，透气排汗，适合夏季日常穿搭，简约百搭风格…"></textarea>
+          </div>
+
+          <div class="field"><label>目标受众</label>
+            <input id="productAudience" placeholder="例：18-35岁爱美女性，追求性价比" />
+          </div>
+
+          <div class="field"><label>价格区间</label>
+            <input id="productPrice" placeholder="例：99-199元" />
+          </div>
+
+          <h2 style="margin-top:14px">数字人信息</h2>
+
+          <div class="field">
+            <label>数字人形象描述</label>
+            <textarea id="productDigitalHuman" placeholder="例：25岁左右的年轻女性，温柔亲和气质，适合小清新风格带货…"></textarea>
+          </div>
+
+          <div class="field"><label>视频风格</label>
+            <select id="productStyle">
+              <option value="">专业亲和（默认）</option>
+              <option value="情绪驱动、原生感、强钩子">薛辉风格</option>
+              <option value="极致聚焦、一招打透">王泽旭风格</option>
+              <option value="痛点+价值+行动指令">董十一风格</option>
+              <option value="温柔松弛、共情带货">婉婉风格</option>
+            </select>
+          </div>
+
+          <div class="field"><label>目标平台</label>
+            <div class="chips" id="productPlatforms">
+              <label><input type="checkbox" value="抖音" checked /> 抖音</label>
+              <label><input type="checkbox" value="小红书" checked /> 小红书</label>
+              <label><input type="checkbox" value="视频号" /> 视频号</label>
+              <label><input type="checkbox" value="快手" /> 快手</label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="analyzeProductBtn" class="btn primary">生成带货方案</button>
+            <button id="exportProductBtn" class="btn">导出 TXT</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>带货视频制作方案</h2>
+          <div class="module-tips">
+            <p>🎯 本模块将为你生成：</p>
+            <ul>
+              <li>商品核心卖点分析</li>
+              <li>完整带货口播脚本</li>
+              <li>数字人拍摄指令（适配 HeyGen / D-ID / 硅基智能）</li>
+              <li>场景与服装搭配建议</li>
+              <li>服装类：虚拟试穿展示方案</li>
+              <li>视频时间轴节奏规划</li>
+              <li>各平台发布建议</li>
+            </ul>
+          </div>
+          <pre id="productOutput" class="output">请填写商品信息并生成…</pre>
+        </div>
       </div>
     </section>
+
+    <!-- ── Tab 2: 口播脚本生成器 ──────────────────────────────────────── -->
+    <section id="tab-voiceover" class="tab-panel">
+      <div class="grid">
+        <div class="card">
+          <h2>对标视频信息</h2>
+
+          <div class="field">
+            <label>对标视频链接（抖音/视频号/小红书等）</label>
+            <input id="voiceoverVideoUrl" placeholder="https://..." />
+          </div>
+
+          <div class="field">
+            <label>视频主题 / 选题方向 <span class="required">*</span></label>
+            <input id="voiceoverVideoTopic" placeholder="例：如何30天瘦10斤，健康减脂方法" />
+          </div>
+
+          <div class="field">
+            <label>视频内容简述（无法提供链接时，请详细描述）</label>
+            <textarea id="voiceoverVideoDesc" placeholder="例：博主分享了3个早上空腹运动的误区，钩子是"每天跑步反而越来越胖"，最后推荐了一种燃脂饮食方法…"></textarea>
+          </div>
+
+          <h2 style="margin-top:14px">我的账号信息</h2>
+
+          <div class="field">
+            <label>我的业务 / 领域</label>
+            <input id="voiceoverOwnBusiness" placeholder="例：健康减脂餐定制服务" />
+          </div>
+
+          <div class="field">
+            <label>我的目标受众</label>
+            <input id="voiceoverOwnAudience" placeholder="例：25-40岁职场女性，想减肥但没时间运动" />
+          </div>
+
+          <h2 style="margin-top:14px">数字人信息</h2>
+
+          <div class="field">
+            <label>数字人形象描述</label>
+            <textarea id="voiceoverDigitalHuman" placeholder="例：专业营养师形象，30岁左右，专业感强，眼神有说服力…"></textarea>
+          </div>
+
+          <div class="field"><label>口播风格</label>
+            <select id="voiceoverStyle">
+              <option value="">专业有感染力（默认）</option>
+              <option value="情绪驱动、原生感、强钩子">薛辉风格</option>
+              <option value="极致聚焦、一招打透">王泽旭风格</option>
+              <option value="痛点+价值+行动指令、成交导向">董十一风格</option>
+              <option value="强势、短句、强冲突、金句收尾">金枪大叔风格</option>
+            </select>
+          </div>
+
+          <div class="field"><label>目标平台</label>
+            <div class="chips" id="voiceoverPlatforms">
+              <label><input type="checkbox" value="抖音" checked /> 抖音</label>
+              <label><input type="checkbox" value="小红书" checked /> 小红书</label>
+              <label><input type="checkbox" value="视频号" /> 视频号</label>
+              <label><input type="checkbox" value="快手" /> 快手</label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="analyzeCompetitorBtn" class="btn primary">生成口播方案</button>
+            <button id="exportVoiceoverBtn" class="btn">导出 TXT</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>口播视频制作方案</h2>
+          <div class="module-tips">
+            <p>🎯 本模块将为你生成：</p>
+            <ul>
+              <li>对标视频爆款结构拆解</li>
+              <li>可复用的爆款公式提炼</li>
+              <li>100% 原创改写口播脚本</li>
+              <li>3个升级版开头钩子</li>
+              <li>数字人拍摄指令（语速/表情/手势/镜头）</li>
+              <li>场景模仿超越方案</li>
+              <li>多平台适配版本</li>
+            </ul>
+          </div>
+          <pre id="voiceoverOutput" class="output">请填写对标视频信息并生成…</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Tab 3: 多平台一键发布 ──────────────────────────────────────── -->
+    <section id="tab-publish" class="tab-panel">
+      <div class="grid">
+        <div class="card">
+          <h2>视频信息</h2>
+
+          <div class="field">
+            <label>视频标题 / 主题 <span class="required">*</span></label>
+            <input id="publishVideoTitle" placeholder="例：三招教你在家做出餐厅级别的红烧肉" />
+          </div>
+
+          <div class="field">
+            <label>视频内容摘要 <span class="required">*</span></label>
+            <textarea id="publishVideoDesc" placeholder="例：视频讲了腌肉、炒糖色、炖煮三个关键步骤，强调了食材比例和火候控制…"></textarea>
+          </div>
+
+          <div class="field">
+            <label>内容类目</label>
+            <select id="publishVideoCategory">
+              <option value="美食教程">美食教程</option>
+              <option value="带货视频">带货视频</option>
+              <option value="知识科普">知识科普</option>
+              <option value="生活分享">生活分享</option>
+              <option value="穿搭展示">穿搭展示</option>
+              <option value="美妆教程">美妆教程</option>
+              <option value="健身运动">健身运动</option>
+              <option value="旅行Vlog">旅行 Vlog</option>
+              <option value="母婴育儿">母婴育儿</option>
+              <option value="商业干货">商业干货</option>
+              <option value="情感故事">情感故事</option>
+              <option value="搞笑娱乐">搞笑娱乐</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>核心价值点 / 卖点</label>
+            <textarea id="publishSellingPoints" placeholder="例：简单易学、家常食材、0失败技巧、比餐厅更健康…"></textarea>
+          </div>
+
+          <div class="field">
+            <label>目标受众</label>
+            <input id="publishAudience" placeholder="例：25-45岁家庭主妇、爱做饭的上班族" />
+          </div>
+
+          <div class="field">
+            <label>账号风格定位</label>
+            <input id="publishAccountStyle" placeholder="例：家常美食博主，温暖治愈风，分享真实生活烹饪" />
+          </div>
+
+          <div class="field"><label>发布平台</label>
+            <div class="chips" id="publishPlatforms">
+              <label><input type="checkbox" value="抖音" checked /> 抖音</label>
+              <label><input type="checkbox" value="小红书" checked /> 小红书</label>
+              <label><input type="checkbox" value="视频号" checked /> 视频号</label>
+              <label><input type="checkbox" value="快手" /> 快手</label>
+              <label><input type="checkbox" value="B站" /> B站</label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="generatePublishBtn" class="btn primary">生成发布方案</button>
+            <button id="exportPublishBtn" class="btn">导出 TXT</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>多平台发布方案</h2>
+          <div class="module-tips">
+            <p>🎯 本模块将为你生成：</p>
+            <ul>
+              <li>视频核心价值分析</li>
+              <li>各平台专属标题（3个备选）</li>
+              <li>各平台正文文案 + 话题标签</li>
+              <li>封面文字建议</li>
+              <li>最佳发布时段</li>
+              <li>评论区互动引导话术</li>
+              <li>跨平台差异化策略</li>
+              <li>后续系列化选题建议</li>
+            </ul>
+          </div>
+          <pre id="publishOutput" class="output">请填写视频信息并生成…</pre>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <script src="/static/app.js"></script>
